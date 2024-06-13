@@ -1,15 +1,15 @@
 package entity.payableservice;
 
-public abstract class RoomService implements PayableService{
+public class Catering implements IPayableService {
     private double price;
     private String description;
 
-    public RoomService() {
+    public Catering() {
         this.price = 1250;
         this.description = "Oda servis hizmeti verilmiştir.";
     }
 
-    public RoomService(double price, String description) {
+    public Catering(double price, String description) {
         this.price = price;
         this.description = description;
     }
@@ -26,7 +26,7 @@ public abstract class RoomService implements PayableService{
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("RoomService{");
+        final StringBuffer sb = new StringBuffer("Catering{");
         sb.append("price=").append(price);
         sb.append(", description='").append(description).append('\'');
         sb.append('}');

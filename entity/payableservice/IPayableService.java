@@ -1,6 +1,6 @@
 package entity.payableservice;
 
-public interface PayableService {
+public interface IPayableService {
     String getDescription();
     double getPrice();
 }

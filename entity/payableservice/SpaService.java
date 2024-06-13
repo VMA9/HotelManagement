@@ -1,6 +1,6 @@
 package entity.payableservice;
 
-public abstract class SpaService implements PayableService {
+public class SpaService implements IPayableService {
     private double price;
     private String description;
 
