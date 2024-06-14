@@ -7,4 +7,25 @@ public class Admin extends User {
     public void manage() {
 
     }
+
+    @Override
+    public void createUser() {
+        System.out.println("createUser() in Admin");
+
+    }
+
+    @Override
+    public void listUser() {
+        System.out.println("listUser() in Admin");
+    }
+
+    @Override
+    public void updateUser() {
+
+    }
+
+    @Override
+    public void deleteUser() {
+
+    }
 }

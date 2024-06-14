@@ -1,17 +1,23 @@
 package entity.payableservice;
 
-public class SpaService implements IPayableService {
-    private double price;
-    private String description;
+public class SpaService extends PayableService {
 
     public SpaService() {
+        this.serviceName = "Spa";
         this.price = 1000;
         this.description = "Spa hizmeti verilmiştir.";
     }
 
-    public SpaService(double price, String description) {
+    public SpaService(String serviceName, double price, String description) {
+        this.serviceName = serviceName;
         this.price = price;
         this.description = description;
+    }
+
+
+    @Override
+    public String getPayableServiceName() {
+        return serviceName;
     }
 
     @Override

@@ -1,17 +1,25 @@
 package entity.payableservice;
 
-public class Catering implements IPayableService {
+public class Catering extends PayableService {
+    private String serviceName;
     private double price;
     private String description;
 
     public Catering() {
+        this.serviceName = "Catering";
         this.price = 1250;
         this.description = "Oda servis hizmeti verilmiştir.";
     }
 
-    public Catering(double price, String description) {
+    public Catering(String serviceName, double price, String description) {
+        this.serviceName = serviceName;
         this.price = price;
         this.description = description;
+    }
+
+    @Override
+    public String getPayableServiceName() {
+        return serviceName;
     }
 
     @Override

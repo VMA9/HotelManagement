@@ -8,4 +8,5 @@ public interface IRezervable {
     void updateRezervation();
     void removeRezervation();
     boolean isAvailable(Date startDate, Date endDate);
+    boolean isOpen();
 }

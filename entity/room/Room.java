@@ -6,14 +6,14 @@ import java.util.Map;
 
 public abstract class Room implements IRoom{
     private String roomName;
-    private final int ROOM_NUMBER;
-    private final Map<String, Boolean> features;
+    private int roomNumber;
+    private Map<String, Boolean> features;
     private double price;
     private int capacity;
 
-    public Room(String roomName,int ROOM_NUMBER, int capacity, double price) {
+    public Room(String roomName,int roomNumber, int capacity, double price) {
         this.roomName = roomName;
-        this.ROOM_NUMBER = ROOM_NUMBER;
+        this.roomNumber = roomNumber;
         this.capacity = validateCapacity(capacity);
         this.price = price;
         this.features = new HashMap<>();
@@ -84,7 +84,7 @@ public abstract class Room implements IRoom{
     public String toString() {
         final StringBuffer sb = new StringBuffer("Room{");
         sb.append("roomName='").append(roomName).append('\'');
-        sb.append(", ROOM_NUMBER=").append(ROOM_NUMBER);
+        sb.append(", ROOM_NUMBER=").append(roomNumber);
         sb.append(", features=").append(features);
         sb.append(", price=").append(price);
         sb.append(", capacity=").append(capacity);
