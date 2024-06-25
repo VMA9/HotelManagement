@@ -1,7 +1,11 @@
 package entity.payableservice;
 
+import java.math.BigDecimal;
+
 public interface IPayableService {
+    int getUserId();
     String getPayableServiceName();
     String getDescription();
-    double getPrice();
+    BigDecimal getPrice();
+    boolean isActive();
 }

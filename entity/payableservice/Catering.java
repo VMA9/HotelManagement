@@ -1,42 +1,46 @@
 package entity.payableservice;
 
-public class Catering extends PayableService {
-    private String serviceName;
-    private double price;
-    private String description;
+import java.math.BigDecimal;
 
-    public Catering() {
-        this.serviceName = "Catering";
-        this.price = 1250;
-        this.description = "Oda servis hizmeti verilmiştir.";
+public class Catering extends PayableService {
+
+    public Catering(int userId, String serviceName, BigDecimal price, String description, boolean isActive) {
+        super(userId, serviceName, price, description, isActive);
     }
 
-    public Catering(String serviceName, double price, String description) {
-        this.serviceName = serviceName;
-        this.price = price;
-        this.description = description;
+    @Override
+    public int getUserId() {
+        return super.getUserId();
     }
 
     @Override
     public String getPayableServiceName() {
-        return serviceName;
+        return super.getPayableServiceName();
     }
 
     @Override
     public String getDescription() {
-        return description;
+        return super.getDescription();
     }
 
     @Override
-    public double getPrice() {
-        return price;
+    public BigDecimal getPrice() {
+        return super.getPrice();
+    }
+
+    @Override
+    public boolean isActive() {
+        return super.isActive();
     }
 
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("Catering{");
-        sb.append("price=").append(price);
+        sb.append("userId=").append(userId);
+        sb.append(", serviceName='").append(serviceName).append('\'');
+        sb.append(", price=").append(price);
         sb.append(", description='").append(description).append('\'');
+        sb.append(", isActive=").append(isActive);
         sb.append('}');
         return sb.toString();
     }

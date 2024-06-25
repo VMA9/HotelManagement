@@ -1,57 +1,65 @@
 package entity.room;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class EconomyRoom extends Room {
-    public EconomyRoom(String roomName, int ROOM_NUMBER, int capacity, double price) {
-        super(roomName, ROOM_NUMBER, capacity, price);
-        addFeature("TV",true);
-        addFeature("Bathroom",true);
-        addFeature("Towel",true);
+    public EconomyRoom(String roomName, int roomNumber, int capacity, BigDecimal price, String roomClass, String description, boolean isActive) {
+        super(roomName, roomNumber, capacity, price, roomClass, description, isActive);
     }
 
     @Override
-    public void addRoom() {
-
+    public int getRoomNumber() {
+        return super.getRoomNumber();
     }
 
     @Override
-    public void listRoom() {
-
+    public String getRoomName() {
+        return super.getRoomName();
     }
 
     @Override
-    public void updateRoom() {
-
+    public BigDecimal getPrice() {
+        return super.getPrice();
     }
 
     @Override
-    public void removeRoom() {
-
+    public int getCapacity() {
+        return super.getCapacity();
     }
 
     @Override
-    public boolean isAvailable(Date startDate, Date endDate) {
+    public String getRoomClass() {
+        return super.getRoomClass();
+    }
+
+    @Override
+    public String getDescription() {
+        return super.getDescription();
+    }
+
+    @Override
+    public boolean getHasSeaView() {
         return false;
     }
 
     @Override
-    public void addRezervation() {
-
+    public boolean getHasJacuzzi() {
+        return false;
     }
 
     @Override
-    public void listRezervation() {
-
+    public boolean getHasSafeBox() {
+        return false;
     }
 
     @Override
-    public void updateRezervation() {
-
+    public boolean getHasWifi() {
+        return false;
     }
 
     @Override
-    public void removeRezervation() {
-
+    public boolean isActive() {
+        return super.isActive();
     }
 }

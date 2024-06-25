@@ -1,61 +1,78 @@
 package entity.room;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class DeluxeRoom extends Room {
-
-    public DeluxeRoom(String roomName, int ROOM_NUMBER, int capacity, double price,boolean hasSeaView, boolean hasJacuzzi, boolean hasSafeBox) {
-        super(roomName,ROOM_NUMBER, capacity, price);
-        addFeature("TV", true);
-        addFeature("Bathroom", true);
-        addFeature("Towel", true);
+    public DeluxeRoom(String roomName, int roomNumber, int capacity, BigDecimal price, String roomClass, String description, boolean hasSeaView, boolean hasJacuzzi, boolean hasSafeBox, boolean isActive) {
+        super(roomName, roomNumber, capacity, price, roomClass, description, isActive);
         addFeature("Sea View", hasSeaView);
         addFeature("Jacuzzi", hasJacuzzi);
         addFeature("Safe", hasSafeBox);
     }
 
     @Override
-    public void addRoom() {
-
-    }
-
-    @Override
-    public void listRoom() {
-
-    }
-
-    @Override
-    public void updateRoom() {
-
-    }
-
-    @Override
-    public void removeRoom() {
-
+    public boolean getAvailable() {
+        return super.getAvailable();
     }
 
     @Override
     public boolean isAvailable(Date startDate, Date endDate) {
+        return super.isAvailable(startDate, endDate);
+    }
+
+    @Override
+    public int getRoomNumber() {
+        return super.getRoomNumber();
+    }
+
+    @Override
+    public String getRoomName() {
+        return super.getRoomName();
+    }
+
+    @Override
+    public BigDecimal getPrice() {
+        return super.getPrice();
+    }
+
+    @Override
+    public int getCapacity() {
+        return super.getCapacity();
+    }
+
+    @Override
+    public String getRoomClass() {
+        return super.getRoomClass();
+    }
+
+    @Override
+    public String getDescription() {
+        return super.getDescription();
+    }
+
+    @Override
+    public boolean getHasSeaView() {
+        return features.get("Sea View");
+    }
+
+    @Override
+    public boolean getHasJacuzzi() {
+        return features.get("Jacuzzi");
+    }
+
+    @Override
+    public boolean getHasSafeBox() {
+        return features.get("Safe");
+    }
+
+    @Override
+    public boolean getHasWifi() {
         return false;
     }
 
     @Override
-    public void addRezervation() {
-
-    }
-
-    @Override
-    public void listRezervation() {
-
-    }
-
-    @Override
-    public void updateRezervation() {
-
-    }
-
-    @Override
-    public void removeRezervation() {
-
+    public boolean isActive() {
+        return super.isActive();
     }
 }

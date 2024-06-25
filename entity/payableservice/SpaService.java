@@ -1,40 +1,46 @@
 package entity.payableservice;
 
+import java.math.BigDecimal;
+
 public class SpaService extends PayableService {
 
-    public SpaService() {
-        this.serviceName = "Spa";
-        this.price = 1000;
-        this.description = "Spa hizmeti verilmiştir.";
+    public SpaService(int userId, String serviceName, BigDecimal price, String description, boolean isActive) {
+        super(userId, serviceName, price, description, isActive);
     }
-
-    public SpaService(String serviceName, double price, String description) {
-        this.serviceName = serviceName;
-        this.price = price;
-        this.description = description;
-    }
-
 
     @Override
-    public String getPayableServiceName() {
-        return serviceName;
+    public int getUserId() {
+        return super.getUserId();
+    }
+
+    @Override
+    public boolean isActive() {
+        return super.isActive();
+    }
+
+    @Override
+    public BigDecimal getPrice() {
+        return super.getPrice();
     }
 
     @Override
     public String getDescription() {
-        return description;
+        return super.getDescription();
     }
 
     @Override
-    public double getPrice() {
-        return price;
+    public String getPayableServiceName() {
+        return super.getPayableServiceName();
     }
 
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("SpaService{");
-        sb.append("price=").append(price);
+        sb.append("userId=").append(userId);
+        sb.append(", serviceName='").append(serviceName).append('\'');
+        sb.append(", price=").append(price);
         sb.append(", description='").append(description).append('\'');
+        sb.append(", isActive=").append(isActive);
         sb.append('}');
         return sb.toString();
     }

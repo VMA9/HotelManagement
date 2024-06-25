@@ -1,46 +1,60 @@
 package entity.rezervable;
 
-import java.util.Date;
+import entity.room.IRoom;
+import entity.user.IUser;
+
+import java.math.BigDecimal;
+import java.sql.Date;
 
 public abstract class Rezervable implements IRezervable {
-    protected int rezervationId;
-    protected String customer;
+    protected int userId;
+    protected int roomId;
     protected Date startDate;
     protected Date endDate;
+    protected boolean isActive;
+    protected BigDecimal totalRezervationPrice;
+    protected boolean isAvailable;
 
-    public Rezervable(int rezervationId, String customer, Date startDate, Date endDate) {
-        this.rezervationId = rezervationId;
-        this.customer = customer;
+    public Rezervable(int userId, int roomId, Date startDate, Date endDate, boolean isActive) {
+        this.userId = userId;
+        this.roomId = roomId;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.isActive = isActive;
     }
 
     @Override
-    public void addRezervation() {
-
+    public int getRoomId() {
+        return roomId;
     }
 
     @Override
-    public void listRezervation() {
-
+    public int getUserId() {
+        return userId;
     }
 
     @Override
-    public void updateRezervation() {
-
+    public Date getStartDate() {
+        return startDate;
     }
 
     @Override
-    public void removeRezervation() {
-
+    public Date getEndDate() {
+        return endDate;
     }
+
     @Override
     public boolean isAvailable(Date startDate, Date endDate) {
-        return false;
+        return isAvailable;
     }
 
     @Override
-    public boolean isOpen() {
-        return false;
+    public boolean isActive() {
+        return isActive;
+    }
+
+    @Override
+    public BigDecimal totalRezervationPrice() {
+        return totalRezervationPrice;
     }
 }

@@ -1,66 +1,94 @@
 package entity.room;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class KingRoom extends Room {
-    public KingRoom(String roomName, int ROOM_NUMBER, int capacity, double price, boolean hasSeaView, boolean hasJacuzzi, boolean hasSafeBox, boolean hasWifi) {
-        super(roomName, ROOM_NUMBER, capacity, price);
-        addFeature("TV", true);
-        addFeature("Bathroom", true);
-        addFeature("Towel", true);
+    public KingRoom(String roomName, int roomNumber, int capacity, BigDecimal price,String roomClass, String description,boolean hasSeaView,boolean hasJacuzzi, boolean hasSafeBox, boolean hasWifi, boolean isActive) {
+        super(roomName, roomNumber, capacity, price,roomClass, description, isActive);
         addFeature("Sea View", hasSeaView);
         addFeature("Jacuzzi", hasJacuzzi);
         addFeature("Safe", hasSafeBox);
         addFeature("Wifi", hasWifi);
     }
 
-    @Override
-    public void addRoom() {
-        System.out.println("addroom in kingroom");
-    }
 
-    @Override
-    public void listRoom() {
-        System.out.println("listRoom in KingRoom");
-    }
-
-    @Override
-    public void updateRoom() {
-
-    }
-
-    @Override
-    public void removeRoom() {
-
-    }
-
-    @Override
     public boolean isAvailable(Date startDate, Date endDate) {
-        return false;
+        return super.isAvailable(startDate, endDate);
     }
 
     @Override
-    public void addRezervation() {
-        System.out.println("addrezervation in kingroom ");
+    public boolean getAvailable() {
+        return super.getAvailable();
     }
 
     @Override
-    public void listRezervation() {
-        System.out.println("listRezervation in KingRoom");
+    public int getRoomNumber() {
+        return super.getRoomNumber();
     }
 
     @Override
-    public void updateRezervation() {
-
+    public String getRoomName() {
+        return super.getRoomName();
     }
 
     @Override
-    public void removeRezervation() {
+    public BigDecimal getPrice() {
+        return super.getPrice();
+    }
 
+    @Override
+    public int getCapacity() {
+        return super.getCapacity();
+    }
+
+    @Override
+    public String getRoomClass() {
+        return super.getRoomClass();
+    }
+
+    @Override
+    public String getDescription() {
+        return super.getDescription();
+    }
+
+    @Override
+    public boolean getHasSeaView() {
+        return features.get("Sea View");
+    }
+
+    @Override
+    public boolean getHasJacuzzi() {
+        return features.get("Jacuzzi");
+    }
+
+    @Override
+    public boolean getHasSafeBox() {
+        return features.get("Safe");
+    }
+
+    @Override
+    public boolean getHasWifi() {
+        return features.get("Wifi");
+    }
+
+    @Override
+    public boolean isActive() {
+        return super.isActive();
     }
 
     @Override
     public String toString() {
-        return super.toString();
+        final StringBuffer sb = new StringBuffer("KingRoom{");
+        sb.append("roomNumber=").append(roomNumber);
+        sb.append(", roomName='").append(roomName).append('\'');
+        sb.append(", features=").append(features);
+        sb.append(", price=").append(price);
+        sb.append(", capacity=").append(capacity);
+        sb.append(", roomClass='").append(roomClass).append('\'');
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", isActive=").append(isActive);
+        sb.append('}');
+        return sb.toString();
     }
 }

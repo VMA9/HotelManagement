@@ -1,44 +1,29 @@
 package dao;
 
-import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.List;
+import dbconnection.IDBConnection;
+import dbconnection.MySQLDBConnection;
+import entity.user.IUser;
+
+import java.sql.*;
 
 public abstract class DAO<T> implements IDAO<T> {
-    Connection connection;
+    protected IDBConnection idbConnection;
 
-    public DAO(Connection connection) {
-        this.connection = connection;
+    public DAO(IDBConnection dbConnection) {
+        this.idbConnection = dbConnection;
     }
 
-    @Override
-    public void create(T entity) {
+    protected abstract void mapToStatement(PreparedStatement ps, T entity) throws SQLException;
 
-    }
+    protected abstract T mapResultSetToEntity(ResultSet rs) throws SQLException;
 
-    @Override
-    public void update(T entity) {
+    protected abstract String getUpdateQuery() throws SQLException;
 
-    }
+    protected abstract String getInsertQuery();
 
-    @Override
-    public void delete(T entity) {
+    protected abstract String getInactiveQuery();
 
-    }
+    protected abstract String getReactiveQuery();
 
-    @Override
-    public T getById(int id) {
-
-        return null;
-    }
-
-    @Override
-    public List<T> getAll() {
-
-        return new ArrayList<>();
-    }
-
-//    protected abstract String getTableName();
-
-//    protected abstract T mapResultSetToEntity(ResultSet rs) throws SQLException;
+    protected abstract String getSelectAllQuery();
 }

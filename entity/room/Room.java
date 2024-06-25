@@ -1,22 +1,29 @@
 package entity.room;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Room implements IRoom{
-    private String roomName;
-    private int roomNumber;
-    private Map<String, Boolean> features;
-    private double price;
-    private int capacity;
+    protected int roomNumber;
+    protected String roomName;
+    protected Map<String, Boolean> features;
+    protected BigDecimal price;
+    protected int capacity;
+    protected String roomClass;
+    protected String description;
+    protected boolean isActive;
 
-    public Room(String roomName,int roomNumber, int capacity, double price) {
+    public Room(String roomName,int roomNumber, int capacity, BigDecimal price,String roomClass, String description, boolean isActive) {
         this.roomName = roomName;
         this.roomNumber = roomNumber;
         this.capacity = validateCapacity(capacity);
         this.price = price;
         this.features = new HashMap<>();
+        this.roomClass = roomClass;
+        this.description = description;
+        this.isActive = isActive;
         addDefaultFeatures();
     }
     protected void addFeature(String feature, boolean available) {
@@ -29,66 +36,54 @@ public abstract class Room implements IRoom{
         return capacity;
     }
     private void addDefaultFeatures() {
-        features.put("TV", false);
-        features.put("Bathroom", false);
-        features.put("Towel", false);
+        features.put("TV", true);
+        features.put("Bathroom", true);
+        features.put("Towel", true);
     }
 
     @Override
-    public void addRoom() {
-        System.out.println("adding room");
+    public boolean getAvailable() {
+//        isAvailable(Date startDate, Date endDate);
+        return false;
     }
 
-    @Override
-    public void listRoom() {
-        System.out.println("listing room");
-    }
-
-    @Override
-    public void updateRoom() {
-        System.out.println("update room");
-    }
-
-    @Override
-    public void removeRoom() {
-        System.out.println("remove room");
-    }
-
-    @Override
     public boolean isAvailable(Date startDate, Date endDate) {
         System.out.println("checking available for room");
         return false;
     }
 
     @Override
-    public void addRezervation() {
-        System.out.println("addRezervation in Room");
+    public int getRoomNumber() {
+        return roomNumber;
     }
 
     @Override
-    public void listRezervation() {
-
+    public String getRoomName() {
+        return roomName;
     }
 
     @Override
-    public void updateRezervation() {
-
+    public BigDecimal getPrice() {
+        return price;
     }
 
     @Override
-    public void removeRezervation() {
-
+    public int getCapacity() {
+        return capacity;
     }
 
     @Override
-    public String toString() {
-        final StringBuffer sb = new StringBuffer("Room{");
-        sb.append("roomName='").append(roomName).append('\'');
-        sb.append(", ROOM_NUMBER=").append(roomNumber);
-        sb.append(", features=").append(features);
-        sb.append(", price=").append(price);
-        sb.append(", capacity=").append(capacity);
-        sb.append('}');
-        return sb.toString();
+    public String getRoomClass() {
+        return roomClass;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public boolean isActive() {
+        return isActive;
     }
 }

@@ -1,12 +1,14 @@
 package entity.rezervable;
 
-import java.util.Date;
+import java.math.BigDecimal;
+import java.sql.Date;
 
 public interface IRezervable {
-    void addRezervation();
-    void listRezervation();
-    void updateRezervation();
-    void removeRezervation();
+    int getRoomId();
+    int getUserId();
+    Date getStartDate();
+    Date getEndDate();
     boolean isAvailable(Date startDate, Date endDate);
-    boolean isOpen();
+    boolean isActive();
+    BigDecimal totalRezervationPrice();
 }
