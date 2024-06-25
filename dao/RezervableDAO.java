@@ -155,7 +155,7 @@ public class RezervableDAO extends DAO<IRezervable> {
         try (Connection connection = idbConnection.connect();
              PreparedStatement ps = connection.prepareStatement(getUserIdQuery())) {
             ps.setString(1, iUser.getTckn());
-            ps.setString(2, iUser.getEmail());
+            ps.setString(2, iUser.getPassword());
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return rs.getInt("id");
@@ -181,7 +181,57 @@ public class RezervableDAO extends DAO<IRezervable> {
             }
         }
     }
+    @Override
+    public IRezervable getByRezervable(int userId) throws SQLException {
+        IRezervable iRezervable = getByRezervableId(userId);
+        if (iRezervable == null) {
+            return null;
+        }
+        try (Connection connection = idbConnection.connect();
+             PreparedStatement ps = connection.prepareStatement(getIdQuery())) {
+            ps.setInt(1, iRezervable.getUserId());
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    iRezervable = (IRezervable) rs;
+                }
+                return iRezervable;
 
+            }
+        } finally {
+            try {
+                idbConnection.disconnect();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+    public IRezervable getByRezervableId(int userId) throws SQLException {
+        IRezervable iRezervable = null;
+        try (Connection connection = idbConnection.connect();
+             PreparedStatement ps = connection.prepareStatement(getBySelectRezervableQuery())) {
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    iRezervable = new RoomRezervation(
+                            rs.getInt("userId"),
+                            rs.getInt("roomId"),
+                            rs.getDate("startDate"),
+                            rs.getDate("endDate"),
+                            rs.getBoolean("isActive")
+                    );
+                    return iRezervable;
+                }
+            } finally {
+                try {
+                    idbConnection.disconnect();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return iRezervable;
+    }
 
     @Override
     protected void mapToStatement(PreparedStatement ps, IRezervable iRezervable) throws SQLException {
@@ -202,16 +252,29 @@ public class RezervableDAO extends DAO<IRezervable> {
                 rs.getBoolean("isActive")
         );
     }
+    protected String getByUserQuery() {
+        return """
+                SELECT * FROM hotelmanagement.users
+                WHERE id = ?;
+                """;
+    }
 
     protected String getIdQuery() {
         return """
-                SELECT id FROM hotelmanagement.rezervations
-                WHERE userId = ? AND roomId = ?;""";
+                SELECT * FROM hotelmanagement.rezervations
+                WHERE userId = ? AND isActive = true;
+                """;
+    }
+    protected String getBySelectRezervableQuery() {
+        return """
+                SELECT * FROM hotelmanagement.rezervations
+                WHERE userId = ? AND isActive = true;
+                """;
     }
     protected String getUserIdQuery() {
         return """
                 SELECT id FROM hotelmanagement.users
-                WHERE tckn = ? AND email = ?;""";
+                WHERE tckn = ? AND password = ?;""";
     }
 
     protected String getCreateDateQuery() {

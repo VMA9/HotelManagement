@@ -139,7 +139,7 @@ public class ApplicationService<T> implements IApplicationService<T> {
         Calendar start = Calendar.getInstance();
         Calendar end = Calendar.getInstance();
         start.setTime(startDate);
-        start.setTime(endDate);
+        end.setTime(endDate);
 
         int daysBetween = 0;
         while (start.before(end)) {

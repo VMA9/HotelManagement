@@ -60,7 +60,6 @@ public class UserDAO extends DAO<IUser> {
     @Override
     public IUser getByUser(String tckn) throws SQLException {
         IUser iUser = getByTckn2(tckn);
-//        int userId = getFindId(iUser.getTckn(), iUser.getPassword());
         if (iUser == null) {
             return null;
         }

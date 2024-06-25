@@ -46,4 +46,7 @@ public interface IDAO<T>{
     default IUser getByUser(String tckn) throws SQLException{
         return null;
     }
+    default IRezervable getByRezervable(int userId) throws SQLException{
+        return null;
+    }
 }

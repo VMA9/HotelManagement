@@ -16,6 +16,7 @@ import entity.user.IUser;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
@@ -33,11 +34,11 @@ public class Test {
     static ApplicationService<IInvoice> invoiceService = new ApplicationService<>(invoiceDAO);
     static Scanner scanner = new Scanner(System.in);
     static IUser user;
-    static int exitCode = 1;
+    static boolean exitCode = true;
 
     public static void main(String[] args) throws SQLException {
         System.out.println("---- HOŞGELDİNİZ ----");
-        while (exitCode > 0) {
+        while (exitCode) {
             writeMenu();
         }
         System.out.println("\n---- İYİ GÜNLER ----");
@@ -47,24 +48,75 @@ public class Test {
         if (userService.isLoggedIn()) {
             int choice = 0;
             printLoggedInMenu();
-            do{
+            do {
                 user = userService.getCurrentUser();
                 int userId = userDAO.getId(user);
-                try{
-                    System.out.print("Seçiminiz: ");
-                }catch (Exception e){
-                    scanner.nextLine();
-                    choice = 0;
+                System.out.print("Seçiminiz: ");
+                try {
+                    choice = scanner.nextInt();
+                } catch (Exception e) {
+                    System.out.println("Geçersiz giriş. Lütfen bir tam sayı seçiniz.");
+                    scanner.next();
+                    continue;
                 }
-                switch (choice){
-                    case 1 ->{
+                switch (choice) {
+                    case 1 -> {
                         System.out.println("\n---- Rezervasyon Ekranı ----");
-                        String roomId;
+                        int roomId;
                         boolean validation = false;
                         do {
                             System.out.print("\nOda Id: ");
-                            roomId = scanner.next();
-                            if (!roomId.isEmpty() && !roomId.isBlank()) {
+                            roomId = scanner.nextInt();
+                            if (roomId >= 0) {
+                                validation = true;
+                            } else {
+                                System.out.println("\nGeçersiz oda seçimi yaptınız.");
+                            }
+                        } while (!validation);
+                        validation = false;
+
+                        String startDateStr;
+                        Date startDate;
+                        Date today = new Date(System.currentTimeMillis());
+                        do {
+                            System.out.print("\nLütfen tarihleri yyyy-MM-dd formatında giriniz: ");
+                            System.out.print("\nRezervasyon başlangıç tarihini giriniz: ");
+                            startDateStr = scanner.next();
+                            startDate = rezervationService.createDateParam(startDateStr);
+                            if (startDate.after(today) || startDate.equals(today)) {
+                                validation = true;
+                            } else {
+                                System.out.println("\nGeçersiz tarih girdiniz.");
+                            }
+                        } while (!validation);
+                        validation = false;
+
+                        String endDateStr;
+                        Date endDate;
+                        today = new Date(System.currentTimeMillis());
+                        do {
+                            System.out.print("\nRezervasyon bitiş tarihini giriniz: ");
+                            endDateStr = scanner.next();
+                            endDate = rezervationService.createDateParam(endDateStr);
+                            if (endDate.after(startDate) && (rezervationService.calculateDaysBetween(startDate, endDate) >= 1)) {
+                                validation = true;
+                            } else {
+                                System.out.println("\nGeçersiz tarih girdiniz.");
+                            }
+                        } while (!validation);
+                        validation = false;
+
+                        IRezervable rezervation = new RoomRezervation(userId, roomId, startDate, endDate, true);
+                        rezervationService.add(rezervation);
+                    }
+                    case 2 -> {
+                        System.out.println("\n---- Rezervasyon Güncelleme ----");
+                        int roomId;
+                        boolean validation = false;
+                        do {
+                            System.out.print("\nOda Id: ");
+                            roomId = scanner.nextInt();
+                            if (roomId >= 0) {
                                 validation = true;
                             } else {
                                 System.out.println("\nGeçersiz oda seçimi yaptınız.");
@@ -78,7 +130,7 @@ public class Test {
                         Date today = new Date(System.currentTimeMillis());
                         do {
                             System.out.print("\nLütfen tarihleri yyyy-MM-dd formatında giriniz: ");
-                            System.out.print("\nRezervasyon başlangıç tarihini: ");
+                            System.out.print("\nRezervasyon başlangıç tarihini giriniz: ");
                             startDateStr = scanner.next();
                             startDate = rezervationService.createDateParam(startDateStr);
                             if (startDate.after(today) || startDate.equals(today)) {
@@ -89,22 +141,36 @@ public class Test {
                         } while (!validation);
                         validation = false;
 
-                        String birthdayStr;
-                        Date birthday;
+                        String endDateStr;
+                        Date endDate;
+                        validation = false;
+                        today = new Date(System.currentTimeMillis());
                         do {
-                            System.out.print("\nLütfen doğum tarihini (yyyy-MM-dd formatında) giriniz: ");
-                            birthdayStr = scanner.next();
-                            birthday = userService.createDateParam(birthdayStr);
-                            if (userService.calculateAge(birthday) >= 18) {
+                            System.out.print("\nRezervasyon bitiş tarihini giriniz: ");
+                            endDateStr = scanner.next();
+                            endDate = rezervationService.createDateParam(endDateStr);
+                            if (endDate.after(startDate) && (roomService.calculateDaysBetween(startDate, endDate) >= 1)) {
                                 validation = true;
                             } else {
-                                System.out.print("\nKayıt olmak için 18 yaşını doldurmalısınız.");
+                                System.out.println("\nGeçersiz tarih girdiniz.");
                             }
                         } while (!validation);
                         validation = false;
+                        IRezervable oldRezervable = rezervableDAO.getByRezervable(userId);
+                        IRezervable newRezervation = new RoomRezervation(userId, roomId, startDate, endDate, true);
+                        rezervationService.update(oldRezervable, newRezervation);
                     }
+                    case 3 -> {
+                        System.out.println("2");
+                    }
+                    case -1 -> {
+                        userService.logout();
+                        System.out.println("----------------\n" + user.getName() + " hesabından çıkış yapıldı.\n" + "----------------\n");
+                        exitCode = false;
+                    }
+                    default -> System.out.println("\nHatalı tuşlama yaptınız!\n");
                 }
-            }while(choice <= 1 && choice >=5);
+            } while (exitCode);
         } else {
             int choice;
             do {
@@ -117,9 +183,10 @@ public class Test {
 
                 try {
                     choice = scanner.nextInt();
-                } catch (Exception e) {
+                } catch (InputMismatchException e) {
                     scanner.nextLine();
                     choice = 0;
+                    continue;
                 }
                 switch (choice) {
                     case 1 -> {
@@ -131,10 +198,9 @@ public class Test {
                             System.out.print("Şifreniz: ");
                             String password = scanner.nextLine();
                             userService.login(tckn, password);
-                            scanner.nextLine();
                         } while (!userService.isLoggedIn());
                     }
-                    case 2 ->{
+                    case 2 -> {
                         System.out.println("\n---- Kayıt Ekranı ----");
                         String tckn;
                         boolean validation = false;
@@ -144,13 +210,13 @@ public class Test {
                             if (tckn.isEmpty() && tckn.isBlank()) {
                                 System.out.println("\nGeçersiz TCKN girdiniz.");
                             }
-                            if(userService.getByUser(tckn) != null){
+                            if (userService.getByUser(tckn) != null) {
                                 System.out.println("\nMevcut TCKN girdiniz.");
                             }
-                            if(tckn.length() != 11){
+                            if (tckn.length() != 11) {
                                 System.out.println("\nLütfen 11 rakamlı TCKN giriniz.");
                             }
-                            if(!tckn.isEmpty() && !tckn.isBlank() && tckn.length() == 11 && userService.getByUser(tckn) == null){
+                            if (!tckn.isEmpty() && !tckn.isBlank() && tckn.length() == 11 && userService.getByUser(tckn) == null) {
                                 validation = true;
                             }
                         } while (!validation);
@@ -255,21 +321,20 @@ public class Test {
                         } while (!validation);
                         validation = false;
 
-                        IUser newUser = new Guest(tckn,name,surname,password,email,phone,birthday,address,gender,true);
+                        IUser newUser = new Guest(tckn, name, surname, password, email, phone, birthday, address, gender, true);
                         userService.add(newUser);
                     }
-                    case -1 -> exitCode = -1;
+                    case -1 -> exitCode = true;
                     default -> System.out.println("\nHatalı tuşlama yaptınız!\n");
                 }
             } while (choice != 1 && choice != 2 && choice != -1);
         }
     }
+
     private static void printLoggedInMenu() {
         System.out.println("### Menu ###");
         System.out.println("1 : Rezervasyon yap");
-        System.out.println("2 : İşlem kayıtlarını görüntüle");
-        System.out.println("3 : Alacak/Borç Bakiye Bilgisini görüntüle");
-        System.out.println("4 : Toplam kullanıcı sayısını görüntüle");
+        System.out.println("2 : Rezervasyonu güncelle");
         System.out.println("-1 : Çıkış \n\n");
     }
 //       if(user.getName().equals("Admin")){
